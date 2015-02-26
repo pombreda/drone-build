@@ -19,8 +19,8 @@ func main() {
 
 	var buf bytes.Buffer
 
-	// nativate to the repository root dir
-	// TODO: should we just set WORKDIR in the build container?
+	// script should change working dir to the
+	// repository root directory
 	cd := fmt.Sprintf("cd %s", clone.Dir)
 	buf.WriteString(newline(cd))
 
@@ -35,8 +35,8 @@ func main() {
 		buf.WriteString(newline(c))
 	}
 
-	os.MkdirAll("/tmp", 0777)
-	ioutil.WriteFile("/tmp/build.sh", buf.Bytes(), 0777)
+	os.MkdirAll("/drone/bin", 0777)
+	ioutil.WriteFile("/drone/bin/build.sh", buf.Bytes(), 0777)
 }
 
 func trace(s string) string {
