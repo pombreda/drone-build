@@ -12,4 +12,4 @@ RUN go get github.com/drone/drone-init/... && \
     go install github.com/drone/drone-init
 
 # run the git-clone plugin when the container starts
-ENTRYPOINT /go/bin/drone-init
+ENTRYPOINT ["/go/bin/drone-init"]
