@@ -38,6 +38,8 @@ Build the Docker container:
 docker build -t drone/drone-init .
 ```
 
+Run the init step to generate the build script:
+
 ```sh
 docker run -i drone/drone-init <<EOF
 {
@@ -58,4 +60,10 @@ docker run -i drone/drone-init <<EOF
 	}
 }
 EOF
+```
+
+Note that Drone will create a volume to share `/drone/bin` with subsequnt containers, including the build container specificied in the `image` attribute of the `.drone.yml` file:
+
+```
+docker run -v /drone/bin -i drone/drone-init
 ```
