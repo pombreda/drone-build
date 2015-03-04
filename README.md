@@ -34,7 +34,7 @@ EOF
 Build the Docker container:
 
 ```sh
-docker build -t plugins/drone-build .
+docker build --rm=true -t plugins/drone-build .
 ```
 
 Run the init step to generate the build script:

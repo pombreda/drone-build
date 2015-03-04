@@ -11,12 +11,13 @@ import (
 )
 
 func main() {
+
 	conf := struct {
 		Commands []string `json:"commands"`
 	}{}
 	clone := plugin.Clone{}
 	plugin.Param("clone", &clone)
-	plugin.Param("config", &conf)
+	plugin.Param("vargs", &conf)
 	plugin.Parse()
 
 	var buf bytes.Buffer
