@@ -11,7 +11,9 @@ import (
 )
 
 func main() {
-	conf := plugin.Config{}
+	conf := struct {
+		Commands []string `json:"commands"`
+	}{}
 	clone := plugin.Clone{}
 	plugin.Param("clone", &clone)
 	plugin.Param("config", &conf)
@@ -24,13 +26,7 @@ func main() {
 	cd := fmt.Sprintf("cd %s", clone.Dir)
 	buf.WriteString(newline(cd))
 
-	// TODO: should we just pass the into the container with -e?
-	for _, c := range conf.Env {
-		exp := fmt.Sprintf("export %s", c)
-		buf.WriteString(newline(exp))
-	}
-
-	for _, c := range conf.Script {
+	for _, c := range conf.Commands {
 		buf.WriteString(trace(c))
 		buf.WriteString(newline(c))
 	}

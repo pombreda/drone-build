@@ -1,4 +1,4 @@
-# drone-init
+# drone-build
 Drone plugin for initializing a build.
 
 
@@ -9,7 +9,7 @@ This plugin is responsible for initializing the Drone build environment. It rece
 The build instructions are generated at `/drone/bin/build.sh` which should be mounted as a volume inside the build container at runtime.
 
 ```sh
-./drone-init <<EOF
+./drone-build <<EOF
 {
 	"clone" : {
 		"branch": "master",
@@ -18,9 +18,8 @@ The build instructions are generated at `/drone/bin/build.sh` which should be mo
 		"ref": "refs/heads/master",
 		"sha": "436b7a6e2abaddfd35740527353e78a227ddcb2c"
 	},
-    "config": {
-        "image": "golang:1.4",
-        "script": [
+    "vargs": {
+        "commands": [
           "go get",
           "go build",
           "go test"
@@ -35,13 +34,13 @@ EOF
 Build the Docker container:
 
 ```sh
-docker build -t drone/drone-init .
+docker build -t plugins/drone-build .
 ```
 
 Run the init step to generate the build script:
 
 ```sh
-docker run -i drone/drone-init <<EOF
+docker run -i plugins/drone-build <<EOF
 {
 	"clone" : {
 		"branch": "master",
@@ -50,9 +49,8 @@ docker run -i drone/drone-init <<EOF
 		"ref": "refs/heads/master",
 		"sha": "436b7a6e2abaddfd35740527353e78a227ddcb2c"
 	},
-	"config": {
-		"image": "golang:1.4",
-		"script": [
+	"vargs": {
+		"commands": [
 			"go get",
 			"go build",
 			"go test"
@@ -65,5 +63,5 @@ EOF
 Note that Drone will create a volume to share `/drone/bin` with subsequnt containers, including the build container specificied in the `image` attribute of the `.drone.yml` file:
 
 ```
-docker run -v /drone/bin -i drone/drone-init
+docker run -v /drone/bin -i plugins/drone-build
 ```
